@@ -1,3 +1,1 @@
-document.getElementById('clickMeBtn').addEventListener('click', function() {
-    document.getElementById('output').textContent = 'Button was clicked!';
-});
+document.getElementById('yr')?.appendChild(document.createTextNode(new Date().getFullYear()));

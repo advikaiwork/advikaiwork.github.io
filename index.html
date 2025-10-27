@@ -1,14 +1,88 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Advik Gupta Portfolio</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home · Advik Gupta Portfolio</title>
+  <meta name="description" content="Advik Gupta Portfolio — art, soccer, writing, and more.">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Welcome to Advik Gupta's Site!</h1>
-    <button id="clickMeBtn">Click Me</button>
-    <p id="output"></p>
-    <script src="script.js"></script>
+  <nav class="nav">
+    <div class="container">
+      <a class="brand" href="index.html">Advik Gupta Portfolio</a>
+      <div class="navlinks">
+        <a href="index.html" class="active">Home</a>
+<a href="about.html" class="">About</a>
+<a href="family.html" class="">Family</a>
+<a href="hobbies.html" class="">Hobbies</a>
+<a href="achievements.html" class="">Achievements</a>
+<a href="soccer.html" class="">Soccer</a>
+<a href="blog.html" class="">Blog</a>
+<a href="contact.html" class="">Contact</a>
+      </div>
+    </div>
+  </nav>
+  <main class="container">
+
+  <section class="hero">
+    <span class="badge">Artist and Athlete</span>
+    <h1>Hi, I'm Advik — I draw, play soccer, and build cool things.</h1>
+    <p class="muted">Welcome to my portfolio: drawings, soccer notes, game dev bits, and blog posts. Built by me, updated as I grow.</p>
+    <div>
+      <a class="btn" href="about.html">Start with About Me</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Latest on YouTube</h2>
+    <p class="muted">Here’s a preview — click through for the full channel.</p>
+    <div class="card">
+      <div class="g-ytsubscribe" data-channel="BetaSquad" data-layout="full" data-count="default"></div>
+      <hr class="sep">
+      <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;border:1px solid var(--border)">
+        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video"
+                style="position:absolute;top:0;left:0;width:100%;height:100%;border:0" allowfullscreen></iframe>
+      </div>
+      <p class="muted" style="margin-top:8px">
+        Channel: <a href="https://www.youtube.com/@BetaSquad" target="_blank" rel="noopener">youtube.com/@BetaSquad</a> — swap the video above to one of your uploads when ready.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Quick Highlights</h2>
+    <div class="grid cards">
+      <div class="card">
+        <h3>About Me</h3>
+        <p class="muted">Who I am, what I value, and where I’m headed.</p>
+        <a href="about.html">Read more →</a>
+      </div>
+      <div class="card">
+        <h3>Art Gallery</h3>
+        <p class="muted">A rotating selection of sketches and finished pieces.</p>
+        <a href="hobbies.html">See drawings →</a>
+      </div>
+      <div class="card">
+        <h3>Soccer</h3>
+        <p class="muted">Players I admire and lessons from the pitch.</p>
+        <a href="soccer.html">Explore →</a>
+      </div>
+      <div class="card">
+        <h3>Blog</h3>
+        <p class="muted">Short reflections and longer posts I’ll keep adding.</p>
+        <a href="blog.html">Visit blog →</a>
+      </div>
+    </div>
+  </section>
+
+  </main>
+  <footer class="footer">
+    <div class="container">© <span id="yr"></span> Advik Gupta Portfolio · Built with ❤️ and GitHub Pages · <a href="https://advikgupta.github.io">advikgupta.github.io</a></div>
+  </footer>
+  <script src="script.js"></script>
+  <script src="https://apis.google.com/js/platform.js"></script>
 </body>
 </html>
+
