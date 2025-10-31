@@ -324,5 +324,117 @@ function enableScroll(){
     <div class="container">© <span id="yr"></span> Advik Gupta Portfolio · Happy Halloween! 🎃</div>
   </footer>
   <script src="../script.js"></script>
+  <script>
+/* ====== GALLERY CONFIG ====== 
+   Update counts to match the number of files you uploaded per family.
+   Files should be 1.jpg, 2.jpg, ... inside each family folder.
+*/
+const GALLERY = {
+  gupte:   { title: "Gupte’s",   count: 3 },
+  gupta:   { title: "Gupta’s",   count: 3 },
+  metekar: { title: "Metekar’s", count: 3 },
+  bumb:    { title: "Bumb’s",    count: 3 },
+  kalkar:  { title: "Kalkar’s",  count: 3 }
+};
+
+// Elements
+let curFamily = null;
+let curIndex = 1;
+const lb = document.getElementById('lb');
+const lbImg = document.getElementById('lb-img');
+const lbCap = document.getElementById('lb-caption');
+
+// IMPORTANT: This page is under /events/, so go up one level for assets:
+const basePath = "../assets/halloween/photos/";
+
+// Build a path and try .jpg then .png (fallback) automatically
+function buildSrc(fam, i, ext="jpg"){ return `${basePath}${fam}/${i}.${ext}`; }
+
+function tryLoad(srcJpg, srcPng){
+  return new Promise((resolve)=>{
+    const test = new Image();
+    test.onload = () => resolve(srcJpg);
+    test.onerror = () => {
+      const test2 = new Image();
+      test2.onload = () => resolve(srcPng);
+      test2.onerror = () => resolve(null);
+      test2.src = srcPng;
+    };
+    test.src = srcJpg;
+  });
+}
+
+async function showImage(){
+  const fam = GALLERY[curFamily];
+  const srcJpg = buildSrc(curFamily, curIndex, "jpg");
+  const srcPng = buildSrc(curFamily, curIndex, "png");
+  const resolved = await tryLoad(srcJpg, srcPng);
+  if(!resolved){
+    console.warn("Image not found:", srcJpg, "or", srcPng);
+    lbCap.textContent = `${fam.title} — missing ${curIndex}`;
+    lbImg.removeAttribute('src');
+    return;
+  }
+  lbImg.src = resolved;
+  lbCap.textContent = `${fam.title} — ${curIndex} / ${fam.count}`;
+}
+
+function openGallery(family){
+  const fam = GALLERY[family];
+  if(!fam){ console.error("Unknown family:", family); return; }
+  if(fam.count < 1){ console.warn("No images configured for", family); return; }
+  curFamily = family;
+  curIndex = 1;
+  lb.classList.add('show');
+  lb.setAttribute('aria-hidden','false');
+  disableScroll();
+  showImage();
+}
+
+function closeLightbox(){
+  lb.classList.remove('show');
+  lb.setAttribute('aria-hidden','true');
+  enableScroll();
+}
+
+function nextImage(){
+  const fam = GALLERY[curFamily];
+  curIndex = curIndex >= fam.count ? 1 : curIndex + 1;
+  showImage();
+}
+
+function prevImage(){
+  const fam = GALLERY[curFamily];
+  curIndex = curIndex <= 1 ? fam.count : curIndex - 1;
+  showImage();
+}
+
+// Close on background click
+lb.addEventListener('click', (e)=>{ if(e.target === lb) closeLightbox(); });
+
+// Keyboard controls
+document.addEventListener('keydown', (e)=>{
+  if(!lb.classList.contains('show')) return;
+  if(e.key === 'Escape') closeLightbox();
+  if(e.key === 'ArrowRight') nextImage();
+  if(e.key === 'ArrowLeft')  prevImage();
+});
+
+// Scroll lock helpers
+let scrollTop = 0;
+function disableScroll(){
+  scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  document.body.style.top = `-${scrollTop}px`;
+  document.body.style.position = 'fixed';
+  document.body.style.width = '100%';
+}
+function enableScroll(){
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.width = '';
+  window.scrollTo(0, scrollTop);
+}
+</script>
+
 </body>
 </html>
