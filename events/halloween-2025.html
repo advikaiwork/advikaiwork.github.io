@@ -67,98 +67,7 @@
 }
   
   </style>
-</head>
-<script>
-/**
- * Gallery configuration — update counts if you add more photos.
- * Files must be named 1.jpg, 2.jpg, 3.jpg ... per family folder.
- */
-const GALLERY = {
-  gupte:   { title: "Gupte’s",   count: 3 },
-  gupta:   { title: "Gupta’s",   count: 3 },
-  metekar: { title: "Metekar’s", count: 3 },
-  bumb:    { title: "Bumb’s",    count: 3 },
-  kalkar:  { title: "Kalkar’s",  count: 3 }
-};
-
-// internal state
-let curFamily = null;
-let curIndex = 1; // 1-based index
-const lb = document.getElementById('lb');
-const lbImg = document.getElementById('lb-img');
-const lbCap = document.getElementById('lb-caption');
-// Note: paths from /events/ page back to assets/:
-const basePath = "../assets/halloween/photos/";
-
-function imgPath(fam, i){
-  return `${basePath}${fam}/${i}.jpg`;
-}
-
-function openGallery(family){
-  const fam = GALLERY[family];
-  if(!fam || fam.count < 1){ return; }
-  curFamily = family;
-  curIndex = 1;
-  showImage();
-  lb.classList.add('show');
-  lb.setAttribute('aria-hidden', 'false');
-  disableScroll();
-}
-
-function closeLightbox(){
-  lb.classList.remove('show');
-  lb.setAttribute('aria-hidden', 'true');
-  enableScroll();
-}
-
-function showImage(){
-  const fam = GALLERY[curFamily];
-  const src = imgPath(curFamily, curIndex);
-  lbImg.src = src;
-  lbCap.textContent = `${fam.title} — ${curIndex} / ${fam.count}`;
-}
-
-function nextImage(){
-  const fam = GALLERY[curFamily];
-  curIndex = curIndex >= fam.count ? 1 : curIndex + 1;
-  showImage();
-}
-
-function prevImage(){
-  const fam = GALLERY[curFamily];
-  curIndex = curIndex <= 1 ? fam.count : curIndex - 1;
-  showImage();
-}
-
-// click background to close
-lb.addEventListener('click', (e)=>{
-  if(e.target === lb){ closeLightbox(); }
-});
-
-// keyboard controls
-document.addEventListener('keydown', (e)=>{
-  if(!lb.classList.contains('show')) return;
-  if(e.key === 'Escape') closeLightbox();
-  if(e.key === 'ArrowRight') nextImage();
-  if(e.key === 'ArrowLeft')  prevImage();
-});
-
-// basic scroll lock while lightbox open
-let scrollTop = 0;
-function disableScroll(){
-  scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  document.body.style.top = `-${scrollTop}px`;
-  document.body.style.position = 'fixed';
-  document.body.style.width = '100%';
-}
-function enableScroll(){
-  document.body.style.position = '';
-  document.body.style.top = '';
-  document.body.style.width = '';
-  window.scrollTo(0, scrollTop);
-}
-</script>
-  
+</head>  
 <body class="halloween">
   <nav class="nav">
     <div class="container">
@@ -317,7 +226,6 @@ function enableScroll(){
     <div id="lb-caption" class="lb-cap"></div>
   </div>
 </div>
-
   </main>
 
  <footer class="footer">
@@ -325,115 +233,120 @@ function enableScroll(){
   </footer>
   <script src="../script.js"></script>
   <script>
-/* ====== GALLERY CONFIG ====== 
-   Update counts to match the number of files you uploaded per family.
-   Files should be 1.jpg, 2.jpg, ... inside each family folder.
-*/
-const GALLERY = {
-  gupte:   { title: "Gupte’s",   count: 3 },
-  gupta:   { title: "Gupta’s",   count: 3 },
-  metekar: { title: "Metekar’s", count: 3 },
-  bumb:    { title: "Bumb’s",    count: 3 },
-  kalkar:  { title: "Kalkar’s",  count: 3 }
-};
+document.addEventListener('DOMContentLoaded', () => {
+  // ====== GALLERY CONFIG ======
+  // Update counts to match uploaded files per family (1.jpg, 2.jpg, ...).
+  const GALLERY = {
+    gupte:   { title: "Gupte’s",   count: 1 }, // <-- set to your actual number
+    gupta:   { title: "Gupta’s",   count: 3 },
+    metekar: { title: "Metekar’s", count: 3 },
+    bumb:    { title: "Bumb’s",    count: 3 },
+    kalkar:  { title: "Kalkar’s",  count: 3 }
+  };
 
-// Elements
-let curFamily = null;
-let curIndex = 1;
-const lb = document.getElementById('lb');
-const lbImg = document.getElementById('lb-img');
-const lbCap = document.getElementById('lb-caption');
+  // Elements (after DOM is ready)
+  const lb    = document.getElementById('lb');
+  const lbImg = document.getElementById('lb-img');
+  const lbCap = document.getElementById('lb-caption');
 
-// IMPORTANT: This page is under /events/, so go up one level for assets:
-const basePath = "../assets/halloween/photos/";
-
-// Build a path and try .jpg then .png (fallback) automatically
-function buildSrc(fam, i, ext="jpg"){ return `${basePath}${fam}/${i}.${ext}`; }
-
-function tryLoad(srcJpg, srcPng){
-  return new Promise((resolve)=>{
-    const test = new Image();
-    test.onload = () => resolve(srcJpg);
-    test.onerror = () => {
-      const test2 = new Image();
-      test2.onload = () => resolve(srcPng);
-      test2.onerror = () => resolve(null);
-      test2.src = srcPng;
-    };
-    test.src = srcJpg;
-  });
-}
-
-async function showImage(){
-  const fam = GALLERY[curFamily];
-  const srcJpg = buildSrc(curFamily, curIndex, "jpg");
-  const srcPng = buildSrc(curFamily, curIndex, "png");
-  const resolved = await tryLoad(srcJpg, srcPng);
-  if(!resolved){
-    console.warn("Image not found:", srcJpg, "or", srcPng);
-    lbCap.textContent = `${fam.title} — missing ${curIndex}`;
-    lbImg.removeAttribute('src');
+  if (!lb || !lbImg || !lbCap) {
+    console.error('Lightbox elements not found. Make sure the HTML block with id="lb" and id="lb-img" exists before this script.');
     return;
   }
-  lbImg.src = resolved;
-  lbCap.textContent = `${fam.title} — ${curIndex} / ${fam.count}`;
-}
 
-function openGallery(family){
-  const fam = GALLERY[family];
-  if(!fam){ console.error("Unknown family:", family); return; }
-  if(fam.count < 1){ console.warn("No images configured for", family); return; }
-  curFamily = family;
-  curIndex = 1;
-  lb.classList.add('show');
-  lb.setAttribute('aria-hidden','false');
-  disableScroll();
-  showImage();
-}
+  // This page sits in /events/, so go up one level for assets:
+  const basePath = "../assets/halloween/photos/";
 
-function closeLightbox(){
-  lb.classList.remove('show');
-  lb.setAttribute('aria-hidden','true');
-  enableScroll();
-}
+  let curFamily = null;
+  let curIndex  = 1;
 
-function nextImage(){
-  const fam = GALLERY[curFamily];
-  curIndex = curIndex >= fam.count ? 1 : curIndex + 1;
-  showImage();
-}
+  function buildSrc(fam, i, ext="jpg"){ return `${basePath}${fam}/${i}.${ext}`; }
 
-function prevImage(){
-  const fam = GALLERY[curFamily];
-  curIndex = curIndex <= 1 ? fam.count : curIndex - 1;
-  showImage();
-}
+  function tryLoad(srcJpg, srcPng){
+    return new Promise((resolve)=>{
+      const test = new Image();
+      test.onload = () => resolve(srcJpg);
+      test.onerror = () => {
+        const test2 = new Image();
+        test2.onload = () => resolve(srcPng);
+        test2.onerror = () => resolve(null);
+        test2.src = srcPng;
+      };
+      test.src = srcJpg;
+    });
+  }
 
-// Close on background click
-lb.addEventListener('click', (e)=>{ if(e.target === lb) closeLightbox(); });
+  async function showImage(){
+    const fam = GALLERY[curFamily];
+    const srcJpg = buildSrc(curFamily, curIndex, "jpg");
+    const srcPng = buildSrc(curFamily, curIndex, "png");
+    const resolved = await tryLoad(srcJpg, srcPng);
+    if(!resolved){
+      console.warn("Image missing:", srcJpg, "and", srcPng);
+      lbImg.removeAttribute('src');
+      lbCap.textContent = `${fam.title} — missing ${curIndex}`;
+      return;
+    }
+    lbImg.src = resolved;
+    lbCap.textContent = `${fam.title} — ${curIndex} / ${fam.count}`;
+  }
 
-// Keyboard controls
-document.addEventListener('keydown', (e)=>{
-  if(!lb.classList.contains('show')) return;
-  if(e.key === 'Escape') closeLightbox();
-  if(e.key === 'ArrowRight') nextImage();
-  if(e.key === 'ArrowLeft')  prevImage();
+  window.openGallery = function(family){
+    const fam = GALLERY[family];
+    if(!fam){ console.error("Unknown family:", family); return; }
+    if(fam.count < 1){ console.warn("No images configured for", family); return; }
+    curFamily = family;
+    curIndex  = 1;
+    lb.classList.add('show');
+    lb.setAttribute('aria-hidden','false');
+    disableScroll();
+    showImage();
+  };
+
+  window.closeLightbox = function(){
+    lb.classList.remove('show');
+    lb.setAttribute('aria-hidden','true');
+    enableScroll();
+  };
+
+  window.nextImage = function(){
+    const fam = GALLERY[curFamily];
+    curIndex = curIndex >= fam.count ? 1 : curIndex + 1;
+    showImage();
+  };
+
+  window.prevImage = function(){
+    const fam = GALLERY[curFamily];
+    curIndex = curIndex <= 1 ? fam.count : curIndex - 1;
+    showImage();
+  };
+
+  // Close on background click
+  lb.addEventListener('click', (e)=>{ if(e.target === lb) closeLightbox(); });
+
+  // Keyboard controls
+  document.addEventListener('keydown', (e)=>{
+    if(!lb.classList.contains('show')) return;
+    if(e.key === 'Escape') closeLightbox();
+    if(e.key === 'ArrowRight') nextImage();
+    if(e.key === 'ArrowLeft')  prevImage();
+  });
+
+  // Scroll lock helpers
+  let scrollTop = 0;
+  function disableScroll(){
+    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    document.body.style.top = `-${scrollTop}px`;
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+  }
+  function enableScroll(){
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    window.scrollTo(0, scrollTop);
+  }
 });
-
-// Scroll lock helpers
-let scrollTop = 0;
-function disableScroll(){
-  scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  document.body.style.top = `-${scrollTop}px`;
-  document.body.style.position = 'fixed';
-  document.body.style.width = '100%';
-}
-function enableScroll(){
-  document.body.style.position = '';
-  document.body.style.top = '';
-  document.body.style.width = '';
-  window.scrollTo(0, scrollTop);
-}
 </script>
 
 </body>
