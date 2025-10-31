@@ -42,8 +42,123 @@
     .web { position:absolute; inset:auto auto 10px 10px; width:48px; opacity:.25; }
     .pump { position:absolute; inset:10px 10px auto auto; width:42px; opacity:.9; }
     .footer-note { color:var(--hallow-muted); font-size:12px; text-align:center; margin-top:8px }
+  /* === Lightbox === */
+.lb {
+  display:none; position:fixed; inset:0; z-index:9999;
+  background:rgba(0,0,0,.9); backdrop-filter:saturate(1.2) blur(2px);
+}
+.lb.show { display:block; animation:lbFade .18s ease-out }
+@keyframes lbFade { from{opacity:0} to{opacity:1} }
+
+.lb-inner { position:absolute; inset:60px 20px 40px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px }
+#lb-img { max-width:90vw; max-height:75vh; border-radius:12px; border:1px solid var(--hallow-border); background:#0e1220 }
+.lb-cap { color:var(--hallow-muted); font-size:14px; text-align:center }
+
+.lb-close, .lb-prev, .lb-next {
+  position:absolute; top:18px; background:transparent; color:#fff; border:0; font-size:36px; cursor:pointer; line-height:1; padding:6px 10px; opacity:.9
+}
+.lb-close { right:16px; }
+.lb-prev { left:16px; top:50%; transform:translateY(-50%); font-size:48px }
+.lb-next { right:16px; top:50%; transform:translateY(-50%); font-size:48px }
+
+@media (max-width:720px){
+  .lb-prev, .lb-next { font-size:42px }
+  #lb-img { max-width:94vw; max-height:66vh }
+}
+  
   </style>
 </head>
+<script>
+/**
+ * Gallery configuration — update counts if you add more photos.
+ * Files must be named 1.jpg, 2.jpg, 3.jpg ... per family folder.
+ */
+const GALLERY = {
+  gupte:   { title: "Gupte’s",   count: 3 },
+  gupta:   { title: "Gupta’s",   count: 3 },
+  metekar: { title: "Metekar’s", count: 3 },
+  bumb:    { title: "Bumb’s",    count: 3 },
+  kalkar:  { title: "Kalkar’s",  count: 3 }
+};
+
+// internal state
+let curFamily = null;
+let curIndex = 1; // 1-based index
+const lb = document.getElementById('lb');
+const lbImg = document.getElementById('lb-img');
+const lbCap = document.getElementById('lb-caption');
+// Note: paths from /events/ page back to assets/:
+const basePath = "../assets/halloween/photos/";
+
+function imgPath(fam, i){
+  return `${basePath}${fam}/${i}.jpg`;
+}
+
+function openGallery(family){
+  const fam = GALLERY[family];
+  if(!fam || fam.count < 1){ return; }
+  curFamily = family;
+  curIndex = 1;
+  showImage();
+  lb.classList.add('show');
+  lb.setAttribute('aria-hidden', 'false');
+  disableScroll();
+}
+
+function closeLightbox(){
+  lb.classList.remove('show');
+  lb.setAttribute('aria-hidden', 'true');
+  enableScroll();
+}
+
+function showImage(){
+  const fam = GALLERY[curFamily];
+  const src = imgPath(curFamily, curIndex);
+  lbImg.src = src;
+  lbCap.textContent = `${fam.title} — ${curIndex} / ${fam.count}`;
+}
+
+function nextImage(){
+  const fam = GALLERY[curFamily];
+  curIndex = curIndex >= fam.count ? 1 : curIndex + 1;
+  showImage();
+}
+
+function prevImage(){
+  const fam = GALLERY[curFamily];
+  curIndex = curIndex <= 1 ? fam.count : curIndex - 1;
+  showImage();
+}
+
+// click background to close
+lb.addEventListener('click', (e)=>{
+  if(e.target === lb){ closeLightbox(); }
+});
+
+// keyboard controls
+document.addEventListener('keydown', (e)=>{
+  if(!lb.classList.contains('show')) return;
+  if(e.key === 'Escape') closeLightbox();
+  if(e.key === 'ArrowRight') nextImage();
+  if(e.key === 'ArrowLeft')  prevImage();
+});
+
+// basic scroll lock while lightbox open
+let scrollTop = 0;
+function disableScroll(){
+  scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  document.body.style.top = `-${scrollTop}px`;
+  document.body.style.position = 'fixed';
+  document.body.style.width = '100%';
+}
+function enableScroll(){
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.width = '';
+  window.scrollTo(0, scrollTop);
+}
+</script>
+  
 <body class="halloween">
   <nav class="nav">
     <div class="container">
@@ -88,7 +203,7 @@
               <li>Supriya: “Costume Glue Gun Pro.”</li>
               <li>Samaira: “Mini Pumpkin Boss.”</li>
             </ul>
-            <a class="btn-ghost" href="#gupte-photos">View photos →</a>
+            <a class="btn-ghost" href="#" onclick="openGallery('gupte'); return false;">View photos →</a>
             <img class="web" src="assets/halloween/web.svg" alt="" />
           </div>
         </article>
@@ -111,7 +226,7 @@
               <li>Mahi: “Treats CEO.”</li>
               <li>Advik: “Sketch Sorcerer & Shot-Creator.”</li>
             </ul>
-            <a class="btn-ghost" href="#gupta-photos">View photos →</a>
+       <a class="btn-ghost" href="#" onclick="openGallery('gupta'); return false;">View photos →</a>
             <img class="web" src="assets/halloween/web.svg" alt="" />
           </div>
         </article>
@@ -134,7 +249,8 @@
               <li>Aswini: “Face-Paint Wizard.”</li>
               <li>Anika: “Glow-Stick Ninja.” • Vedansh: “Tiny Terror (cute).”</li>
             </ul>
-            <a class="btn-ghost" href="#metekar-photos">View photos →</a>
+            <a class="btn-ghost" href="#" onclick="openGallery('metekar'); return false;">View photos →</a>
+
             <img class="web" src="assets/halloween/web.svg" alt="" />
           </div>
         </article>
@@ -157,7 +273,8 @@
               <li>Pooja: “Pumpkin Parade Designer.”</li>
               <li>Roomi: “Candy Corn Collector.”</li>
             </ul>
-            <a class="btn-ghost" href="#bumb-photos">View photos →</a>
+            <a class="btn-ghost" href="#" onclick="openGallery('bumb'); return false;">View photos →</a>
+
             <img class="web" src="assets/halloween/web.svg" alt="" />
           </div>
         </article>
@@ -180,7 +297,8 @@
               <li>Akanksha: “Cookie Cauldron Chef.”</li>
               <li>Riti: “Glitter Ghoul.” • Viraj: “Jump-Scare Specialist.”</li>
             </ul>
-            <a class="btn-ghost" href="#kalkar-photos">View photos →</a>
+           <a class="btn-ghost" href="#" onclick="openGallery('kalkar'); return false;">View photos →</a>
+
             <img class="web" src="assets/halloween/web.svg" alt="" />
           </div>
         </article>
@@ -189,6 +307,17 @@
 
       <p class="footer-note">Upload photos to <code>assets/halloween/</code> using the file names shown above. You can change any title or chip text to match costumes.</p>
     </section>
+<!-- Lightbox overlay -->
+<div id="lb" class="lb" aria-hidden="true">
+  <button class="lb-close" aria-label="Close" onclick="closeLightbox()">×</button>
+  <button class="lb-prev"  aria-label="Previous" onclick="prevImage()">‹</button>
+  <button class="lb-next"  aria-label="Next"     onclick="nextImage()">›</button>
+  <div class="lb-inner">
+    <img id="lb-img" alt="">
+    <div id="lb-caption" class="lb-cap"></div>
+  </div>
+</div>
+
   </main>
 
  <footer class="footer">
