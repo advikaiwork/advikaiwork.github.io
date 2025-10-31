@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Events · Advik Gupta Portfolio</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .events-hero { text-align:center; padding:40px 0 8px; }
+    .events-hero h1 { margin:0; font-size:40px }
+    .events-hero p { color:var(--muted); margin:8px 0 0 }
+    .event-thumb { aspect-ratio: 16/9; width:100%; object-fit:cover; border-radius:12px; border:1px solid var(--border) }
+    .badge { display:inline-block; padding:6px 10px; border-radius:999px; font-weight:800; font-size:12px; letter-spacing:.08em; text-transform:uppercase; background:rgba(94,11,237,.15); color:#5E0BED; }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container">
+      <a class="brand" href="../index.html">Advik Gupta Portfolio</a>
+      <div class="navlinks">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../hobbies.html">Hobbies</a>
+        <a href="../blog.html">Blog</a>
+        <a href="../apps/index.html">Apps</a>
+        <a href="./index.html" class="active">Events</a>
+        <a href="../contact.html">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <section class="events-hero">
+      <h1>Events</h1>
+      <p>Parties, meet-ups, and celebrations—captured here.</p>
+    </section>
+
+    <section class="section">
+      <div class="grid cards">
+
+        <!-- Event Card: Halloween 2025 -->
+        <article class="card">
+          <img class="event-thumb" src="../assets/halloween/cover.jpg" alt="Halloween party cover (pumpkins and purple lights)">
+          <h3 style="margin:10px 0 6px">
+            <a href="halloween-2025.html">🎃 Halloween Crew 2025</a>
+          </h3>
+          <p class="muted">Five families, spooky snacks, and costume fun—cartoonish character cards for each crew.</p>
+          <p class="muted" style="font-size:12px">
+            <span class="badge">Oct 31, 2025</span> • Cary, NC
+          </p>
+          <p><a class="btn" href="halloween-2025.html">Open event →</a></p>
+        </article>
+
+        <!-- TEMPLATE: copy to add more events
+        <article class="card">
+          <img class="event-thumb" src="../assets/events/NEW_EVENT_COVER.jpg" alt="Event thumbnail">
+          <h3><a href="my-new-event.html">Event Title</a></h3>
+          <p class="muted">One-line description of what made it cool.</p>
+          <p class="muted" style="font-size:12px"><span class="badge">Mon DD, YYYY</span> • City</p>
+          <p><a class="btn" href="my-new-event.html">Open event →</a></p>
+        </article>
+        -->
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">© <span id="yr"></span> Advik Gupta Portfolio</div>
+  </footer>
+  <script src="../script.js"></script>
+</body>
+</html>
