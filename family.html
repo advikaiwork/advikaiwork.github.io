@@ -1,53 +1,133 @@
-
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Family · Advik Gupta Portfolio</title>
-  <meta name="description" content="Advik Gupta Portfolio — art, soccer, writing, and more.">
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Family · Advik Gupta Portfolio</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Page-specific styling (light, playful) */
+    .fam-hero { text-align:center; padding:40px 0 8px; }
+    .fam-hero h1 { margin:0; font-size:40px; letter-spacing:.2px }
+    .fam-hero p { color:var(--muted); margin:10px 0 0 }
+    .fam-grid { display:grid; gap:16px; grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); }
+    .fam-card { background:var(--panel); border:1px solid var(--border); border-radius:18px; overflow:hidden; transition:transform .2s ease, box-shadow .2s ease; }
+    .fam-card:hover { transform:translateY(-4px); box-shadow:0 12px 30px rgba(0,0,0,.18); }
+    .fam-img { aspect-ratio: 4 / 3; width:100%; object-fit:cover; display:block; background:#0e1220; }
+    .fam-body { padding:14px 16px 16px; }
+    .fam-name { margin:6px 0 2px; font-size:18px; }
+    .fam-role { color:#5E0BED; font-weight:800; font-size:12px; letter-spacing:.12em; text-transform:uppercase; }
+    .chips { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 0; }
+    .chip { font-size:12px; padding:6px 10px; border-radius:999px; border:1px dashed var(--border); color:var(--muted); background:rgba(94,11,237,.08) }
+    .quote { margin:10px 0 0; color:var(--muted); font-style:italic; }
+    .fam-gallery { margin-top:28px; }
+    .fam-gallery h2 { margin:0 0 8px; }
+    .thumbs { display:grid; gap:10px; grid-template-columns:repeat(auto-fit, minmax(160px,1fr)); }
+    .thumb { border-radius:12px; border:1px solid var(--border); overflow:hidden; background:#0e1220; }
+    .thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+  </style>
 </head>
 <body>
   <nav class="nav">
     <div class="container">
       <a class="brand" href="index.html">Advik Gupta Portfolio</a>
       <div class="navlinks">
-        <a href="index.html" class="">Home</a>
-<a href="about.html" class="">About</a>
-<a href="family.html" class="active">Family</a>
-<a href="hobbies.html" class="">Hobbies</a>
-<a href="achievements.html" class="">Achievements</a>
-<a href="soccer.html" class="">Soccer</a>
-<a href="blog.html" class="">Blog</a>
-<a href="contact.html" class="">Contact</a>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="family.html" class="active">Family</a>
+        <a href="hobbies.html">Hobbies</a>
+        <a href="achievements.html">Achievements</a>
+        <a href="soccer.html">Soccer</a>
+        <a href="blog.html">Blog</a>
         <a href="apps/index.html">Apps</a>
+        <a href="events/index.html">Events</a>
+        <a href="contact.html">Contact</a>
       </div>
     </div>
   </nav>
+
   <main class="container">
+    <!-- Hero -->
+    <section class="fam-hero">
+      <p class="kicker">Family</p>
+      <h1>Meet My Family</h1>
+      <p>My favorite team off the field — always cheering, always supporting, always fun.</p>
+    </section>
 
-  <section class="section">
-    <h1>Family</h1>
-    <p class="muted">A few notes about the people who cheer me on and make this fun.</p>
-    <div class="grid cards">
-      <div class="card">
-        <h3>Photos</h3>
-        <p>Drop a few favorite, non-private photos here (or use drawings/avatars instead).</p>
-      </div>
-      <div class="card">
-        <h3>Gratitude</h3>
-        <p>Short reflections on what I’ve learned from family and friends.</p>
-      </div>
-    </div>
-  </section>
+    <!-- Family cards -->
+    <section class="section fam-grid">
+      <!-- Dad -->
+      <article class="fam-card">
+        <img class="fam-img" src="assets/family/dad.jpg" alt="Pawan Gupta">
+        <div class="fam-body">
+          <p class="fam-role">Dad</p>
+          <h3 class="fam-name">Pawan Gupta</h3>
+          <p>Curious about everything. Pushes me to learn, build, and keep improving — whether it’s soccer drills, coding projects, or art ideas.</p>
+          <div class="chips">
+            <span class="chip">📚 Lifelong learner</span>
+            <span class="chip">🔥 Grill master</span>
+            <span class="chip">⚙️ Tech + strategy</span>
+          </div>
+          <p class="quote">“Stay curious, ship projects.”</p>
+        </div>
+      </article>
 
+      <!-- Mom -->
+      <article class="fam-card">
+        <img class="fam-img" src="assets/family/mom.jpg" alt="Mahi Gupta">
+        <div class="fam-body">
+          <p class="fam-role">Mom</p>
+          <h3 class="fam-name">Mahi Gupta</h3>
+          <p>The calm energy of the house — creative, funny, and always ready with ideas (and the best food). Keeps me balanced between school, soccer, and fun.</p>
+          <div class="chips">
+            <span class="chip">🍛 Chef-in-chief</span>
+            <span class="chip">🎨 Creative brain</span>
+            <span class="chip">💬 Good vibes only</span>
+          </div>
+          <p class="quote">“Eat, laugh, and try again.”</p>
+        </div>
+      </article>
+
+      <!-- Advik -->
+      <article class="fam-card">
+        <img class="fam-img" src="assets/family/me.jpg" alt="Advik">
+        <div class="fam-body">
+          <p class="fam-role">Me</p>
+          <h3 class="fam-name">Advik</h3>
+          <p>13 • Artist & Athlete. I love soccer, drawing, coding, and making small apps. Always learning, always building, always having fun with my people.</p>
+          <div class="chips">
+            <span class="chip">⚽ Midfield moves</span>
+            <span class="chip">✏️ Sketchbook kid</span>
+            <span class="chip">🕹️ FIFA tactics</span>
+          </div>
+          <p class="quote">“Dream it, draw it, do it.”</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- Optional mini gallery row (swap images or remove) -->
+    <section class="section fam-gallery">
+      <h2>Family Moments</h2>
+      <p class="muted">A few favorite snapshots. More coming soon.</p>
+      <div class="thumbs">
+        <a class="thumb" href="assets/family/gallery1.jpg" target="_blank" rel="noopener">
+          <img src="assets/family/gallery1.jpg" alt="Family moment 1">
+        </a>
+        <a class="thumb" href="assets/family/gallery2.jpg" target="_blank" rel="noopener">
+          <img src="assets/family/gallery2.jpg" alt="Family moment 2">
+        </a>
+        <a class="thumb" href="assets/family/gallery3.jpg" target="_blank" rel="noopener">
+          <img src="assets/family/gallery3.jpg" alt="Family moment 3">
+        </a>
+      </div>
+    </section>
   </main>
+
   <footer class="footer">
-    <div class="container">© <span id="yr"></span> Advik Gupta Portfolio · Built with ❤️ and GitHub Pages · <a href="https://advikgupta.github.io">advikgupta.github.io</a></div>
+    <div class="container">© <span id="yr"></span> Advik Gupta Portfolio · Built with ❤️ and GitHub Pages</div>
   </footer>
   <script src="script.js"></script>
-  <script src="https://apis.google.com/js/platform.js"></script>
 </body>
 </html>
+
 
